@@ -471,9 +471,11 @@ export default function App() {
 
                         {/* Dummy mini barcode bar */}
                         <div className="mt-8 flex justify-between items-end border-t border-white/10 pt-3">
-                          <div className="space-y-0.5">
+                          <div className="space-y-0.5 min-w-0">
                             <p className="text-[9px] text-white/60 uppercase font-bold font-sans">Code number</p>
-                            <p className="text-sm font-mono tracking-wider font-semibold">{card.cardNumber}</p>
+                            <p className="text-sm font-mono tracking-wider font-semibold truncate">
+                              {card.barcodeType === 'QR' ? 'QR Code' : card.cardNumber}
+                            </p>
                           </div>
                           {card.expiryDate && (
                             <div className="text-right">
@@ -963,9 +965,11 @@ export default function App() {
                       </div>
                     </div>
                     <div className="flex justify-between items-end border-t border-white/10 pt-3">
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-[9px] text-white/50 uppercase font-bold font-sans">Serial code</p>
-                        <p className="text-sm font-mono tracking-wider font-semibold">{sharedCard.cardNumber}</p>
+                        <p className="text-sm font-mono tracking-wider font-semibold truncate">
+                          {sharedCard.barcodeType === 'QR' ? 'QR Code' : sharedCard.cardNumber}
+                        </p>
                       </div>
                       {sharedCard.expiryDate && (
                         <div className="text-right">

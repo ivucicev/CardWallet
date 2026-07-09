@@ -93,10 +93,8 @@ export function BarcodeRenderer({ value, type }: BarcodeRendererProps) {
         <div className="bg-white p-1 rounded-lg">
           <canvas ref={canvasRef} className="mx-auto" />
         </div>
-        {error ? (
+        {error && (
           <p className="text-red-500 text-xs mt-1 font-medium">{error}</p>
-        ) : (
-          <p className="text-neutral-400 font-mono text-[10px] tracking-widest mt-2">{value}</p>
         )}
       </div>
     );
