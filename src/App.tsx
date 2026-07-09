@@ -77,12 +77,12 @@ export default function App() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   
   // Form states
-  const [formStorePreset, setFormStorePreset] = useState<string>('dm');
-  const [formStoreName, setFormStoreName] = useState('DM');
-  const [formCardName, setFormCardName] = useState('DM Customer Card');
+  const [formStorePreset, setFormStorePreset] = useState<string>('');
+  const [formStoreName, setFormStoreName] = useState('');
+  const [formCardName, setFormCardName] = useState('');
   const [formCardNumber, setFormCardNumber] = useState('');
-  const [formBarcodeType, setFormBarcodeType] = useState<'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR'>('EAN13');
-  const [formColor, setFormColor] = useState('bg-pink-600 border border-pink-700/10');
+  const [formBarcodeType, setFormBarcodeType] = useState<'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR'>('CODE128');
+  const [formColor, setFormColor] = useState('bg-slate-700 border border-slate-800/10');
   const [formNotes, setFormNotes] = useState('');
   const [formIsCoupon, setFormIsCoupon] = useState(false);
   const [formExpiryDate, setFormExpiryDate] = useState('');
@@ -116,54 +116,9 @@ export default function App() {
         const response = await fetch('/api/cards');
         if (response.ok) {
           const serverCards = await response.json();
-          if (Array.isArray(serverCards) && serverCards.length > 0) {
+          if (Array.isArray(serverCards)) {
             setCards(serverCards);
             localStorage.setItem('card_wallet_cards', JSON.stringify(serverCards));
-            setSyncStatus('synced');
-          } else if (serverCards.length === 0 && !localCards) {
-            // Seed with default placeholders if no cards exist anywhere
-            const initialSeed: Card[] = [
-              {
-                id: 'demo-dm',
-                name: 'My DM Active Card',
-                store: 'DM',
-                cardNumber: '2091283120348',
-                barcodeType: 'EAN13',
-                color: 'bg-pink-600 border border-pink-700/10',
-                notes: 'Collect points for vouchers at checkout!',
-                isCoupon: false,
-                createdAt: new Date().toISOString()
-              },
-              {
-                id: 'demo-pevex',
-                name: 'Pevex Club Card',
-                store: 'PEVEX',
-                cardNumber: 'PVX-88192031-H',
-                barcodeType: 'CODE128',
-                color: 'bg-green-600 border border-green-700/10',
-                notes: 'Pevex Club loyalty club discount membership.',
-                isCoupon: false,
-                createdAt: new Date().toISOString()
-              },
-              {
-                id: 'demo-emmezeta',
-                name: 'Emezzeta Club Discount',
-                store: 'Emezzeta',
-                cardNumber: 'EMM402910293',
-                barcodeType: 'CODE128',
-                color: 'bg-blue-700 border border-blue-800/10',
-                notes: 'Emezzeta customer club card',
-                isCoupon: false,
-                createdAt: new Date().toISOString()
-              }
-            ];
-            setCards(initialSeed);
-            localStorage.setItem('card_wallet_cards', JSON.stringify(initialSeed));
-            
-            // Upload demo cards to SQLite in background
-            for (const card of initialSeed) {
-              await uploadCardToServer(card, true);
-            }
             setSyncStatus('synced');
           }
         }
@@ -388,7 +343,11 @@ export default function App() {
   };
 
   const resetForm = () => {
-    handlePresetChange('dm');
+    setFormStorePreset('');
+    setFormStoreName('');
+    setFormCardName('');
+    setFormBarcodeType('CODE128');
+    setFormColor('bg-slate-700 border border-slate-800/10');
     setFormCardNumber('');
     setFormNotes('');
     setFormIsCoupon(false);
@@ -563,7 +522,7 @@ export default function App() {
                     </div>
                     <h3 className="text-base font-semibold text-slate-800">No cards stored yet</h3>
                     <p className="text-slate-500 text-xs max-w-xs mt-1">
-                      Add loyalty cards for DM, Pevex, Emezzeta, BabyCenter, or save templates.
+                      Add loyalty cards for your favorite stores, or save templates.
                     </p>
                     <button
                       onClick={() => {
@@ -653,7 +612,7 @@ export default function App() {
                           required
                           value={formStoreName}
                           onChange={(e) => setFormStoreName(e.target.value)}
-                          placeholder="e.g. DM, Pevex"
+                          placeholder="e.g. Supermarket, Pharmacy"
                           className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:border-slate-400 outline-none shadow-sm font-semibold text-slate-800"
                         />
                       </div>
@@ -811,7 +770,7 @@ export default function App() {
                           required
                           value={formStoreName}
                           onChange={(e) => setFormStoreName(e.target.value)}
-                          placeholder="e.g. DM, Pevex"
+                          placeholder="e.g. Supermarket, Pharmacy"
                           className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:border-slate-400 outline-none shadow-sm font-semibold text-slate-800"
                         />
                       </div>

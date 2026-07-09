@@ -1,6 +1,6 @@
 # Card Wallet
 
-A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards for stores like DM, Pevex, Emezzeta, and BabyCenter.
+A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards.
 
 ## Tech stack
 
