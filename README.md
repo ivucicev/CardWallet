@@ -1,20 +1,40 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Card Wallet
 
-# Run and deploy your AI Studio app
+A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards for stores like DM, Pevex, Emezzeta, and BabyCenter.
 
-This contains everything you need to run your app locally.
+## Tech stack
 
-View your app in AI Studio: https://ai.studio/apps/acde7c9c-e74f-4b99-91b9-a6ae8a80804d
+- React 19 + Vite
+- Express server
+- SQLite (via `sqlite`/`sqlite3`)
+- Tailwind CSS
 
-## Run Locally
+## Run locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Copy `.env.example` to `.env.local` and fill in the values.
 3. Run the app:
    `npm run dev`
+
+The app runs at http://localhost:3000.
+
+## Build
+
+```
+npm run build
+npm run start
+```
+
+## Run with Docker
+
+```
+docker build -t card-wallet .
+docker run -p 3000:3000 -v card-wallet-data:/app card-wallet
+```
+
+## Deployment
+
+Every push to `main` builds and publishes a Docker image to GitHub Container Registry via [.github/workflows/docker-build.yml](.github/workflows/docker-build.yml), tagged `ghcr.io/ivucicev/cardwallet:latest`.
