@@ -1,0 +1,8 @@
+{
+  "name": "Card Wallet",
+  "description": "A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards for stores like DM, Pevex, Emezzeta, and BabyCenter.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
