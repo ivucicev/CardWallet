@@ -1,0 +1,11 @@
+services:
+  card-wallet:
+    image: ghcr.io/ivucicev/cardwallet:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - card-wallet-data:/app
+
+volumes:
+  card-wallet-data:

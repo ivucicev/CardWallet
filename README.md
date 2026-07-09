@@ -35,6 +35,12 @@ docker build -t card-wallet .
 docker run -p 3000:3000 -v card-wallet-data:/app card-wallet
 ```
 
+Or pull the published image with Docker Compose:
+
+```
+docker compose up -d
+```
+
 ## Deployment
 
 Every push to `main` builds and publishes a Docker image to GitHub Container Registry via [.github/workflows/docker-build.yml](.github/workflows/docker-build.yml), tagged `ghcr.io/ivucicev/cardwallet:latest`.
