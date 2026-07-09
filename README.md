@@ -35,7 +35,7 @@ docker build -t card-wallet .
 docker run -p 3000:3000 -v card-wallet-data:/app card-wallet
 ```
 
-Or pull the published image with Docker Compose:
+Or pull the published image with Docker Compose. Meant to run behind a reverse proxy (e.g. Coolify/Traefik) — the container only `expose`s port 3000, it isn't published to the host:
 
 ```
 docker compose up -d
