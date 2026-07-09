@@ -1,6 +1,20 @@
 # Card Wallet
 
-A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards.
+A simple mobile wallet for storing and sharing customer loyalty cards and coupon cards. Add a card by typing its number, scanning it with your camera, or uploading a photo — the barcode/QR format is detected automatically and rendered as a live, scannable code at checkout.
+
+<p align="center">
+  <img src="screenshots/add-card.png" alt="Card Wallet add-card screen on mobile" width="360" />
+</p>
+
+## Features
+
+- Store loyalty cards and coupons, each with its own color theme
+- Add a code by typing it, scanning it with the camera, or uploading a photo
+- Auto-detects barcode format (CODE128, EAN-13, EAN-8, UPC-A) and QR codes
+- Renders a live, scannable barcode/QR at checkout
+- Share a card with a link (`/share/:id`) that imports it into another wallet
+- Optional expiry date and notes per card
+- Works offline via `localStorage`, syncs to a SQLite backend when online
 
 ## Tech stack
 
