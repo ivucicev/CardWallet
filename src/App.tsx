@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { Card, StorePreset } from './types';
 import { STORE_PRESETS, BARCODE_TYPES } from './presets';
+import { detectBarcodeType } from './barcode';
 import { BarcodeRenderer } from './components/BarcodeRenderer';
 import { BarcodeScanner } from './components/BarcodeScanner';
 
@@ -38,30 +39,6 @@ function generateShortId(): string {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
-}
-
-// Auto-detect barcode layout format based on input
-function detectBarcodeType(code: string): 'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR' {
-  const clean = code.trim();
-  if (!clean) return 'CODE128';
-  
-  // URL or typical long identifier implies QR Code
-  if (/^(https?:\/\/|ftp:\/\/|mailto:|tel:)/i.test(clean) || (clean.length > 25 && /[/:?=&]/.test(clean))) {
-    return 'QR';
-  }
-  
-  // Remove spaces or dashes commonly used in card numbers
-  const digitsOnly = clean.replace(/[\s-]/g, '');
-  
-  // If it is numeric only
-  if (/^\d+$/.test(digitsOnly)) {
-    if (digitsOnly.length === 13) return 'EAN13';
-    if (digitsOnly.length === 8) return 'EAN8';
-    if (digitsOnly.length === 12) return 'UPCA';
-  }
-  
-  // Default fallback for general alphanumeric barcodes
-  return 'CODE128';
 }
 
 export default function App() {
@@ -292,9 +269,7 @@ export default function App() {
   // Handle successful barcode scan
   const handleScanSuccess = (code: string, format?: 'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR') => {
     setFormCardNumber(code);
-    if (format) {
-      setFormBarcodeType(format);
-    }
+    setFormBarcodeType(format || detectBarcodeType(code));
     setIsScannerOpen(false);
   };
 

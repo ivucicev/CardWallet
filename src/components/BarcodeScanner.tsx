@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import { Camera, Upload, X, RefreshCw, AlertCircle, CheckCircle2, Loader2, Lightbulb } from 'lucide-react';
+import { detectBarcodeType } from '../barcode';
 
 interface BarcodeScannerProps {
   onScanSuccess: (code: string, format?: 'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR') => void;
@@ -267,19 +268,10 @@ export function BarcodeScanner({ onScanSuccess, onClose }: BarcodeScannerProps) 
       
       playBeep();
       setSuccessCode(decodedText);
-      
-      // Auto-guess EAN-13 vs normal if no direct format back
-      let formatGuess: 'CODE128' | 'EAN13' | 'EAN8' | 'UPCA' | 'QR' | undefined;
-      const cleanDigits = decodedText.replace(/\s+/g, '');
-      if (/^\d{13}$/.test(cleanDigits)) {
-        formatGuess = 'EAN13';
-      } else if (/^\d{8}$/.test(cleanDigits)) {
-        formatGuess = 'EAN8';
-      } else if (/^\d{12}$/.test(cleanDigits)) {
-        formatGuess = 'UPCA';
-      } else if (/^[0-9a-zA-Z-]{3,15}$/.test(cleanDigits)) {
-        formatGuess = 'CODE128';
-      }
+
+      // scanFile doesn't report the original format, so guess it from the
+      // decoded content using the same heuristic as manual entry/camera scan.
+      const formatGuess = detectBarcodeType(decodedText);
 
       setTimeout(() => {
         onScanSuccess(decodedText, formatGuess);
